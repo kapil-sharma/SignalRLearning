@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <input id="msg" />
+    <input type="button" id="echo" value="Echo" />
+    <input type="button" id="send" value="Send" />
+    <ul id="msgs"></ul>
+    <script src="../Scripts/jquery-1.6.4.min.js"></script>
+    <script src="../Scripts/jquery.signalR-2.0.2.js"></script>
+    <script>
+        var conn = $.connection("/chatapp");
+        conn.received(function (data) {
+            $("#msgs").append("<li>" + data + "</li>");
+        });
+
+        conn.start().done(function () {
+            $("#send").click(function () {
+                conn.send("send: "+ $("#msg").val());
+            });
+            $("#echo").click(function () {
+                conn.send("echo: "+ $("#msg").val());
+            });
+        });
+    </script>
+</body>
+</html>
